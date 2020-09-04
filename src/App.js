@@ -1,14 +1,35 @@
 import React from 'react';
-import {BrowserRouter as Router} from "react-router-dom";
+import axios from "axios";
+import {BrowserRouter as Router, Route} from "react-router-dom";
 
-function App() {
-  return (
-    <div className="App">
-      <Router>
-        <Route></Route>
-      </Router>
-    </div>
-  );
+//...COMPONENTS....
+import Navbar from "./components/Navbar";
+import Posts from "./components/Posts";
+import Signup from "./components/Signup";
+import Login from "./components/Login";
+
+export default class App extends React.Component {
+
+  constructor() {
+    super();
+    this.state = {
+      isLoggedIn: false
+    }
+  }  
+
+  render() {
+    return (
+      <div className="App">
+        <Router>
+          {/* <Navbar />  */}
+          <Route path="/" exact component={Posts} />
+          <Route path="/login" exact component={Login} />
+          <Route path="/signup" exact component={Signup} />
+        </Router>
+      </div>
+    );
+  }
+
+
 }
 
-export default App;
