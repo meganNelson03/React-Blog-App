@@ -25,10 +25,6 @@ const userRouter = require("./routes/users.js")
 app.use(bodyparser.urlencoded({extended: false}));
 app.use(bodyparser.json());
 
-//......ROUTES...........
-app.use("/posts", postRouter);
-// app.use("/users", userRouter);
-
 //......SESSION..........
 app.use(session({
     secret: process.env.SESSION_SECRET,
@@ -39,6 +35,10 @@ app.use(session({
 //....PASSPORT CONFIG.....
 app.use(passport.initialize());
 app.use(passport.session());
+
+//......ROUTES...........
+app.use("/posts", postRouter);
+app.use("/users", userRouter);
 
 app.get("/", (req, res) => {
     res.redirect("/posts");
