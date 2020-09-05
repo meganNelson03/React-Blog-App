@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "axios";
 import { Redirect } from "react-router-dom";
+import Posts from "./Posts.jsx";
 
 
 export default class Login extends React.Component {
@@ -39,15 +40,22 @@ export default class Login extends React.Component {
             console.log("logged it!");
             console.log(res.data);
 
+            this.props.updateUser({
+                currentUser: this.state.username,
+                isLoggedIn: true
+            })
+
             this.setState({
                 redirectTo: "/"
             })
-        })
+        }).catch(err => console.log("Error: " + err));
     } 
+
+
 
     render() {
         if (this.state.redirectTo) {
-            return <Redirect to={ {pathname: "/"} }/>
+            return <Redirect to={ {pathname: this.state.redirectTo} } />;
         } else {
             return(
                 <div className="login-form-container">
