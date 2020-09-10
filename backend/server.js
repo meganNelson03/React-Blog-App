@@ -7,6 +7,7 @@ const express = require("express"),
     dbConnection = require("./database"),
     cors = require("cors"),
     passport = require("./passport"),
+    GoogleStrategy = require("passport-google-oauth2").Strategy,
     app = express();
 
 const PORT = process.env.PORT;    
@@ -19,10 +20,12 @@ const Post = require("./database/models/post.js");
 
 //......ROUTE REQs......
 const postRouter = require("./routes/posts.js");
-const userRouter = require("./routes/users.js")
+const userRouter = require("./routes/users.js");
+const commentRouter = require("./routes/comments.js");
+const authRouter = require("./routes/auth.js");
 
 //......MIDDLEWARE.......
-app.use(bodyparser.urlencoded({extended: false}));
+app.use(bodyparser.urlencoded({extended: true}));
 app.use(bodyparser.json());
 
 //......SESSION..........
@@ -39,6 +42,8 @@ app.use(passport.session());
 //......ROUTES...........
 app.use("/posts", postRouter);
 app.use("/users", userRouter);
+app.use("/posts/:id/comments", commentRouter);
+app.use("/auth", authRouter);
 
 app.get("/", (req, res) => {
     res.redirect("/posts");

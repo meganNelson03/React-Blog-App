@@ -1,7 +1,6 @@
 import React from "react";
 import axios from "axios";
 
-
 export default class Signup extends React.Component {
 
     constructor(props) {
@@ -18,6 +17,8 @@ export default class Signup extends React.Component {
     }
 
     handleInputChange(e) {
+
+        console.log(this.state.username, this.state.password);
         const val = e.target.value;
         const name = e.target.name;
         this.setState(prevValue => {
@@ -36,9 +37,6 @@ export default class Signup extends React.Component {
         }).then((res) => {
             console.log("SUBMIT /LOGIN");
             console.log(res.data);
-
-            
-
         })
     }
 
@@ -52,12 +50,14 @@ export default class Signup extends React.Component {
                         className="signup-username" 
                         type="text" 
                         name="username" 
+                        value={this.state.username}
                         required></input>
                     <input 
                         onChange={this.handleInputChange}
                         className="signup-password" 
                         type="password" 
                         name="password" 
+                        value={this.state.password}
                         required></input>
                     <button className="btn btn-primary btn-md" type="submit">Sign Up</button>
                 </form>

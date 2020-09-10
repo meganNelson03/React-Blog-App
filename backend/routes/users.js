@@ -48,11 +48,9 @@ router.post('/signup', (req, res) => {
 })
 
 
-
-
 // Get Current User
 router.get('/', (req, res, next) => {
-    console.log('===== user!!======')
+    console.log('===== Getting Current User!!======')
     console.log(req.user)
     if (req.user) {
         res.json({ user: req.user })

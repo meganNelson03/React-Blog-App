@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from "axios";
+import UserProvider from "../../contexts/UserProvider.jsx";
 
 export default class Navbar extends Component {
+    static contextType = UserProvider.context; 
+
 
   constructor(props) {
     super(props);
@@ -14,22 +17,20 @@ export default class Navbar extends Component {
     }
   }
 
+  componentDidMount() {
+  }
+
   handleLogout(e) {
       e.preventDefault();
 
       axios.post("/users/logout").then((res) => {
-          if (res.status === 200) {
-              this.props.updateUser({
-                  isLoggedIn: false,
-                  currentUser: null
-              })
-          }
       }).catch(err => console.log(err));
+
+      window.location = "/";
   }
 
   render() {
-    console.log("NAVBAR")
-    console.log(this.props);
+      const user  = this.context;
 
     return (
       <nav className="navbar navbar-dark bg-dark navbar-expand-lg">
@@ -37,23 +38,26 @@ export default class Navbar extends Component {
         
         <div className="collpase navbar-collapse">
         {
-            this.props.isLoggedIn === true? 
-            
-            <ul className="navbar-nav mr-auto">
-                <li className="navbar-item">
-                    <Link onClick={this.handleLogout} to="/">Logout</Link> 
-                </li>
-                <li className="navbar-item">
-                    <Link onClick={this.handleLogout} to="/profile">{this.props.username}</Link> 
-                </li>  
-            </ul>
-             :
+            !(user.isAuthenticated) ? 
+
             <ul className="navbar-nav mr-auto">
                 <li className="navbar-item">
                     <Link to="/login" className="nav-link">Login</Link>
                 </li>
             </ul>
+            :
+            <ul className="navbar-nav ml-auto">
+                <li className="navbar-item">
+                    <Link onClick={this.handleLogout} to="/">Logout</Link> 
+                </li>
+                <li className="navbar-item">
+                    <Link onClick={this.handleLogout} to="/profile">{user.username}</Link> 
+                </li>  
+            </ul>
+                
         }     
+
+        
         </div>
       </nav>
     );

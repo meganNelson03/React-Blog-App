@@ -1,10 +1,10 @@
 import React from "react";
 import axios from "axios";
 import { Redirect } from "react-router-dom";
-import Posts from "./Posts.jsx";
-
+import UserProvider from "../../contexts/UserProvider.jsx";
 
 export default class Login extends React.Component {
+    static contextType = UserProvider.context;
 
     constructor() {
         super();
@@ -12,11 +12,6 @@ export default class Login extends React.Component {
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
 
-        this.state = {
-            username: "",
-            password: "",
-            redirectTo: null
-        }
     }
 
     handleInputChange(e) {
@@ -37,38 +32,32 @@ export default class Login extends React.Component {
             username: this.state.username,
             password: this.state.password
         }).then((res) => {
-            console.log("logged it!");
-            console.log(res.data);
-
-            this.props.updateUser({
-                currentUser: this.state.username,
-                isLoggedIn: true
-            })
-
-            this.setState({
-                redirectTo: "/"
-            })
+            window.location = "/";
         }).catch(err => console.log("Error: " + err));
+
+        
     } 
 
 
 
     render() {
-        if (this.state.redirectTo) {
-            return <Redirect to={ {pathname: this.state.redirectTo} } />;
-        } else {
+        const { user } = this.context;
+
             return(
+                <div>
+                <p>{typeof user === "undefined"? null : user.username }</p>
                 <div className="login-form-container">
                     <h2>Login</h2>
+                    <p></p>
                     <form className="login-form" onSubmit={this.handleSubmit}>
                         <input name="username" type="text" onChange={this.handleInputChange} required></input>
                         <input name="password" type="password" onChange={this.handleInputChange} required></input>
                         <button className="btn btn-primary btn-md" type="submit">Login</button>
-                    </form>
-                    
+                    </form>  
+                </div>
+                <a href="/auth/google">Login with Google</a>
                 </div>
             );
-        } 
     }
 
 
